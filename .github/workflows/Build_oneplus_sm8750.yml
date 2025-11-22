@@ -374,6 +374,11 @@ jobs:
           echo "CONFIG_TMPFS_POSIX_ACL=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TMPFS=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_HEADERS_INSTALL=n" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_HYBRIDSWAP=n" >> gki_defconfig
+          echo "CONFIG_HYBRIDSWAP_CORE=n" >> gki_defconfig
+          echo "CONFIG_HYBRIDSWAP_SWAPD=n" >> gki_defconfig
+          echo "CONFIG_HYBRID_ZSMALLOC=n" >> gki_defconfig
+          echo "CONFIG_HYBRIDSWAP_ZRAM=n" >> gki_defconfig
           #Remove check_defconfig
           sudo sed -i 's/check_defconfig//' ./common/build.config.gki
 
