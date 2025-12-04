@@ -267,16 +267,7 @@ jobs:
           patch -p1 < 002-zstd.patch || true
           
 
-            
-
-
-
-
-          
-      - name: 🔧 Set gki_defconfig (设置编译配置) 
-        run: |
-          #Remove check_defconfig
-          sudo sed -i 's/check_defconfig//' ./common/build.config.gki
+        
 
       - name: 🔧 Set Kernel name (设置内核名称)
         run: |
