@@ -345,44 +345,44 @@ jobs:
         run: |
           cd kernel_workspace
 
-          echo "📥 正在下载 OKI Magisk 模块（包含私有仓库权限）..."
-          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-               -L https://api.github.com/repos/MidweekSnail19/OKI_Userspace_helper_module/zipball/main \
-               -o MagiskModule.zip
+          echo "📥 下载公开仓库 Magisk 模块..."
+          curl -L -o MagiskModule.zip \
+            https://github.com/MidweekSnail19/OKI_Userspace_helper_module/archive/refs/heads/main.zip
 
           echo "📂 解压 Magisk 模块..."
           unzip MagiskModule.zip -d MagiskModule_tmp
 
-          MODULE_DIR=$(find MagiskModule_tmp -maxdepth 1 -type d | head -n 1)
+          # 自动找出解压目录（因为 GitHub zip 会带 hash 名称）
+          MODULE_DIR=$(find MagiskModule_tmp -maxdepth 1 -type d -name "MidweekSnail19-OKI_Userspace_helper_module*" | head -n 1)
           echo "📁 模块目录：$MODULE_DIR"
 
           mkdir -p "$MODULE_DIR/ko"
+
+          echo "📦 注入编译的 zram.ko ..."
           cp ./common/out/drivers/block/zram/zram.ko "$MODULE_DIR/ko/zram.ko"
 
-          echo "📦 重新打包 Magisk 模块..."
+          echo "📦 重新打包为 MagiskModule_modified.zip..."
           cd "$MODULE_DIR"
           zip -r ../../MagiskModule_modified.zip ./*
           cd ../..
+
+          echo "🎉 修改后的 Magisk 模块生成成功：MagiskModule_modified.zip"
       - name: 📦 Make AnyKernel3 (创建Anykernel3)
         run: |
           cd kernel_workspace
           git clone https://github.com/cctv18/AnyKernel3 --depth=1
           rm -rf ./AnyKernel3/.git
+
           cd AnyKernel3
           cp ../common/out/arch/arm64/boot/Image ./Image
-          if [[ ! -f ./Image ]]; then
-            echo "未找到内核镜像文件，构建可能出错"
-            exit 1
-          fi
-          KSU_TYPENAME="KSU"
-          if [[ "${{ github.event.inputs.lz4kd_enable }}" == "true" ]]; then
-            wget https://raw.githubusercontent.com/cctv18/oppo_oplus_realme_sm8750/refs/heads/main/zram.zip
-          fi
-          if [[ -n "${{ github.event.inputs.kernel_suffix }}" ]]; then
-            zip -r ../AnyKernel3_${KSU_TYPENAME}_${{ env.KSUVER }}_${{ env.KERNEL_VERSION }}_A15_${{ github.event.inputs.kernel_suffix }}.zip ./*
-          else
-            zip -r ../AnyKernel3_${KSU_TYPENAME}_${{ env.KSUVER }}_${{ env.KERNEL_VERSION }}_A15_${{ env.KERNEL_NAME }}.zip ./*
-          fi
+
+          # ★ 加入 Magisk 模块
+          cp ../MagiskModule_modified.zip ./MagiskModule.zip
+
+          zip -r ../AnyKernel3_${KSU_TYPENAME}_${{ env.KSUVER }}_${{ env.KERNEL_VERSION }}_A15_${{ env.KERNEL_NAME }}.zip ./*
+
+          
+
           
       - name: 📤 Upload AnyKernel3 (上传 Anykernel3)
         uses: actions/upload-artifact@v4
