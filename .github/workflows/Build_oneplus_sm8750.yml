@@ -396,7 +396,7 @@ jobs:
           TIME_FORM="$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
           echo "TIME=$TIME" >> $GITHUB_ENV
           echo "TIME_FORM=$TIME_FORM" >> $GITHUB_ENV
-          TAG_HEAD="${{ env.TIME_FORM }}"
+          TAG_HEAD="OKI6.6"
           echo "TAG_HEAD=$TAG_HEAD" >> $GITHUB_ENV
           KSU_TYPENAME="KSU"
           echo "KSU_TYPENAME=$KSU_TYPENAME" >> $GITHUB_ENV
