@@ -265,10 +265,10 @@ jobs:
           git clone https://github.com/facebook/zstd.git
           cd ./common
           git apply -p1 < 001-lz4.patch || true
-          cd ../zstd/contrib/linux-kernel
-          make libzstd
-          make test
-          make import LINUX=../../../common
+          #cd ../zstd/contrib/linux-kernel
+          #make libzstd
+          #make test
+          #make import LINUX=../../../common
           
 
         
@@ -338,8 +338,6 @@ jobs:
           sudo rm -rf /usr/local/lib/android &
           sudo rm -rf /opt/ghc &
           sudo rm -rf /opt/hostedtoolcache/CodeQL &
-          WORKDIR="$(cd .. && pwd)"
-          export PATH="$WORKDIR/clang18/bin:$WORKDIR/build-tools/bin:$PATH"
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error gki_defconfig &&
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error Image modules
           LD_PRELOAD=$PRELOAD_LIBS stat ./Makefile
