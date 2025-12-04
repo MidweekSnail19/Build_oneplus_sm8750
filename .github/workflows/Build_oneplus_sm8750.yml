@@ -262,9 +262,13 @@ jobs:
           cp ./oppo_oplus_realme_sm8750/zram_patch/001-lz4.patch ./common
           cp ./oppo_oplus_realme_sm8750/zram_patch/lz4armv8.S ./common/lib
           cp ./oppo_oplus_realme_sm8750/zram_patch/002-zstd.patch ./common/
+          git clone https://github.com/facebook/zstd.git
           cd ./common
           git apply -p1 < 001-lz4.patch || true
-          patch -p1 < 002-zstd.patch || true
+          cd ../zstd/contrib/linux-kernel
+          make libzstd
+          make test
+          make import LINUX=../../../common
           
 
         
