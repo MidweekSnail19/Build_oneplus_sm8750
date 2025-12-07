@@ -35,7 +35,11 @@ on:
         required: false
         default: ''
 
-      
+      enable_feature_z:
+        description: "添加完美风驰"
+        required: false
+        default: true
+        type: boolean      
        
 
 
