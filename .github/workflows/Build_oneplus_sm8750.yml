@@ -159,7 +159,7 @@ jobs:
             unzip -q common.zip && 
             mv "realme_GT7pro-AndroidB-common-source-master" common
           elif [ "${DEVICES_NAME}" = "oneplus_ace5_ultra" ] || [ "${DEVICES_NAME}" = "realme_GT7" ]; then
-            aria2c -s16 -x16 -k1M https://github.com/MidweekSnail19/android_kernel_oneplus_mt6991/archive/refs/heads/dev-experimental.zip -o common.zip && 
+            aria2c -s16 -x16 -k1M https://github.com/MidweekSnail19/android_kernel_oneplus_mt6991/archive/refs/heads/dev.zip -o common.zip && 
             unzip -q common.zip && 
             mv "android_kernel_oneplus_mt6991-dev" common
           else
